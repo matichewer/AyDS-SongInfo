@@ -16,10 +16,10 @@ private const val ARTISTS = "artists"
 private const val ALBUM = "album"
 private const val IMAGES = "images"
 private const val RELEASE_DATE = "release_date"
+private const val RELEASE_DATE_PRECISION = "release_date_precision"
 private const val URL = "url"
 private const val EXTERNAL_URL = "external_urls"
 private const val SPOTIFY = "spotify"
-private const val RELEASE_DATE_PRECISION = "release_date_precision"
 
 internal class JsonToSongResolver : SpotifyToSongResolver {
 
@@ -61,6 +61,11 @@ internal class JsonToSongResolver : SpotifyToSongResolver {
         return album[RELEASE_DATE].asString
     }
 
+    private fun JsonObject.getReleaseDatePrecision(): String {
+        val album = this[ALBUM].asJsonObject
+        return album[RELEASE_DATE_PRECISION].asString
+    }
+
     private fun JsonObject.getImageUrl(): String {
         val album = this[ALBUM].asJsonObject
         return album[IMAGES].asJsonArray[1].asJsonObject[URL].asString
@@ -69,11 +74,6 @@ internal class JsonToSongResolver : SpotifyToSongResolver {
     private fun JsonObject.getSpotifyUrl(): String {
         val externalUrl = this[EXTERNAL_URL].asJsonObject
         return externalUrl[SPOTIFY].asString
-    }
-
-    private fun JsonObject.getReleaseDatePrecision(): String {
-        val album = this[ALBUM].asJsonObject
-        return album[RELEASE_DATE_PRECISION].asString
     }
 
 }
