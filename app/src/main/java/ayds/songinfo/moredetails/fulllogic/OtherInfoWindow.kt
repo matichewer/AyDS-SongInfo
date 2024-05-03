@@ -10,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.room.Room.databaseBuilder
 import ayds.songinfo.R
+import ayds.songinfo.moredetails.data.External.LastFMAPI
+import ayds.songinfo.moredetails.data.Local.ArticleDatabase
+import ayds.songinfo.moredetails.data.Local.ArticleEntity
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
@@ -23,7 +26,7 @@ private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 private const val LASTFM_IMAGE_URL =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Lastfm_logo.svg/320px-Lastfm_logo.svg.png"
 
-data class ArtistBiography(val artistName: String, val biography: String, val articleUrl: String)
+data class ArtistBiography(val artistName: String, val biography: String, val articleUrl: String) // LISTO
 
 class OtherInfoWindow : Activity() {
     private lateinit var articleTextView: TextView
@@ -75,6 +78,7 @@ class OtherInfoWindow : Activity() {
         updateUi(artistBiography)
     }
 
+    // RepositoryImpl
     private fun getArtistInfoFromRepository(): ArtistBiography {
         val artistName = getArtistName()
 
@@ -93,16 +97,16 @@ class OtherInfoWindow : Activity() {
         return artistBiography
     }
 
-    private fun ArtistBiography.markItAsLocal() = copy(biography = "[*]$biography")
+    private fun ArtistBiography.markItAsLocal() = copy(biography = "[*]$biography") // ARTIST BIOGRAPHY
 
-    private fun getArticleFromDB(artistName: String): ArtistBiography? {
+    private fun getArticleFromDB(artistName: String): ArtistBiography? { // LOCAL
         val artistEntity = articleDatabase.ArticleDao().getArticleByArtistName(artistName)
         return artistEntity?.let {
             ArtistBiography(artistName, artistEntity.biography, artistEntity.articleUrl)
         }
     }
 
-    private fun getArticleFromService(artistName: String): ArtistBiography {
+    private fun getArticleFromService(artistName: String): ArtistBiography { // EXTERNAL
 
         var artistBiography = ArtistBiography(artistName, "", "")
         try {
@@ -115,7 +119,7 @@ class OtherInfoWindow : Activity() {
         return artistBiography
     }
 
-    private fun getArtistBioFromExternalData(
+    private fun getArtistBioFromExternalData( // EXTERNAL
         serviceData: String?,
         artistName: String
     ): ArtistBiography {
@@ -131,10 +135,10 @@ class OtherInfoWindow : Activity() {
         return ArtistBiography(artistName, text, url.asString)
     }
 
-    private fun getSongFromService(artistName: String) =
+    private fun getSongFromService(artistName: String) = // EXTERNAL
         lastFMAPI.getArtistInfo(artistName).execute()
 
-    private fun insertArtistIntoDB(artistBiography: ArtistBiography) {
+    private fun insertArtistIntoDB(artistBiography: ArtistBiography) { // LOCAL
         articleDatabase.ArticleDao().insertArticle(
             ArticleEntity(
                 artistBiography.artistName, artistBiography.biography, artistBiography.articleUrl
@@ -142,7 +146,7 @@ class OtherInfoWindow : Activity() {
         )
     }
 
-    private fun updateUi(artistBiography: ArtistBiography) {
+    private fun updateUi(artistBiography: ArtistBiography) { // VIEW
         runOnUiThread {
             updateOpenUrlButton(artistBiography)
             updateLastFMLogo()
@@ -150,23 +154,23 @@ class OtherInfoWindow : Activity() {
         }
     }
 
-    private fun updateOpenUrlButton(artistBiography: ArtistBiography) {
+    private fun updateOpenUrlButton(artistBiography: ArtistBiography) { // VIEW
         openUrlButton.setOnClickListener {
             navigateToUrl(artistBiography.articleUrl)
         }
     }
 
-    private fun navigateToUrl(url: String) {
+    private fun navigateToUrl(url: String) { // VIEW
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setData(Uri.parse(url))
         startActivity(intent)
     }
 
-    private fun updateLastFMLogo() {
+    private fun updateLastFMLogo() { // VIEW
         Picasso.get().load(LASTFM_IMAGE_URL).into(lastFMImageView)
     }
 
-    private fun getArtistName() =
+    private fun getArtistName() = // LISTO
         intent.getStringExtra(ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
 
     private fun updateArticleText(artistBiography: ArtistBiography) {
@@ -174,7 +178,7 @@ class OtherInfoWindow : Activity() {
         articleTextView.text = Html.fromHtml(textToHtml(text, artistBiography.artistName))
     }
 
-    private fun textToHtml(text: String, term: String?): String {
+    private fun textToHtml(text: String, term: String?): String { // LISTO
         val builder = StringBuilder()
         builder.append("<html><div width=400>")
         builder.append("<font face=\"arial\">")
