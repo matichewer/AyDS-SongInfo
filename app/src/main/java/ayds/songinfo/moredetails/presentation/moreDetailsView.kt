@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import ayds.songinfo.moredetails.fulllogic.ArtistBiography
 import ayds.songinfo.moredetails.fulllogic.LASTFM_IMAGE_URL
-import ayds.songinfo.moredetails.fulllogic.OtherInfoWindow
 import com.squareup.picasso.Picasso
 import java.util.Locale
 
@@ -24,11 +23,6 @@ private fun textToHtml(text: String, term: String?): String {
     builder.append("</font></div></html>")
     return builder.toString()
 }
-
-private fun getArtistName() =
-    intent.getStringExtra(OtherInfoWindow.ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
-
-
 
 private fun updateUi(artistBiography: ArtistBiography) {
     runOnUiThread {

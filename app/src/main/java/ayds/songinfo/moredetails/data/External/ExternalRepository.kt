@@ -1,8 +1,9 @@
 package ayds.songinfo.moredetails.data.External
 
-import ayds.songinfo.moredetails.fulllogic.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.Artist.ArtistBiography
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import retrofit2.Response
 import java.io.IOException
 
 
@@ -11,21 +12,22 @@ private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
 interface ExternalRepository {
 
-    fun getSongFromService(artistName: String)
+    fun getSongFromService(artistName: String): Response<String>?
 
-    fun getArtistBioFromExternalData(serviceData: String?,artistName: String): ArtistBiography
+    // fun getArtistBioFromExternalData(serviceData: String?,artistName: String): ArtistBiography
 
-    fun getArticleFromService(artistName: String): ArtistBiography
+    // fun getArticleFromService(artistName: String): ArtistBiography
 
 }
 
-internal class ExternalRepositoryImp(): ExternalRepository {
+internal class ExternalRepositoryImp(private val lastFMAPI: LastFMAPI): ExternalRepository {
 
-    override fun getSongFromService(artistName: String) =
+        
+    override fun getSongFromService(artistName: String): Response<String> =
         lastFMAPI.getArtistInfo(artistName).execute()
 
 
-    override fun getArtistBioFromExternalData(
+    fun getArtistBioFromExternalData(
         serviceData: String?,
         artistName: String
     ): ArtistBiography {
@@ -41,7 +43,7 @@ internal class ExternalRepositoryImp(): ExternalRepository {
         return ArtistBiography(artistName, text, url.asString)
     }
 
-    override fun getArticleFromService(artistName: String): ArtistBiography {
+    fun getArticleFromService(artistName: String): ArtistBiography {
 
         var artistBiography = ArtistBiography(artistName, "", "")
         try {

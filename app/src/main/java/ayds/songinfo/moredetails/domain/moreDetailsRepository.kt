@@ -1,8 +1,8 @@
 package ayds.songinfo.moredetails.domain
-import ayds.songinfo.moredetails.domain.entities.Artist
+import ayds.songinfo.moredetails.domain.entities.Artist.ArtistBiography
 
-interface ArtistRepository{
+interface moreDetailsRepository{
 
-    fun getArtistInfoFromRepository(): Artist
+    fun getArtistInfoFromRepository(): ArtistBiography
 
 }

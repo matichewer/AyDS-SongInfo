@@ -170,7 +170,7 @@ class OtherInfoWindow : Activity() {
         Picasso.get().load(LASTFM_IMAGE_URL).into(lastFMImageView)
     }
 
-    private fun getArtistName() = // LISTO
+    private fun getArtistName() = // VIEW
         intent.getStringExtra(ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
 
     private fun updateArticleText(artistBiography: ArtistBiography) {

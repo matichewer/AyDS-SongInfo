@@ -2,7 +2,9 @@ package ayds.songinfo.moredetails.data
 
 import ayds.songinfo.moredetails.data.External.ExternalRepository
 import ayds.songinfo.moredetails.data.Local.LocalRepository
-import ayds.songinfo.moredetails.fulllogic.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.Artist.ArtistBiography
+import android.content.Intent
+import ayds.songinfo.moredetails.domain.moreDetailsRepository
 
 
 class moreDetailsRepositoryImpl(
@@ -11,7 +13,10 @@ class moreDetailsRepositoryImpl(
 ): moreDetailsRepository {
 
 
-    private fun getArtistInfoFromRepository(): ArtistBiography {
+    private fun getArtistName() =
+        intent.getStringExtra(OtherInfoWindow.ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
+
+    override private fun getArtistInfoFromRepository(): ArtistBiography {
         val artistName = getArtistName()
 
         val dbArticle = getArticleFromDB(artistName)
