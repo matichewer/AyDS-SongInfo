@@ -18,6 +18,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 private const val ARTICLE_BD_NAME = "database-article"
 private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
+// el injector crea las instancias
 object OtherInfoInjector {
 
     lateinit var presenter: OtherInfoPresenter
