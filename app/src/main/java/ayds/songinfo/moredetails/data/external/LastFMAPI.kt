@@ -1,4 +1,4 @@
-package ayds.songinfo.moredetails.data.External
+package ayds.songinfo.moredetails.data.external
 
 import retrofit2.Call
 import retrofit2.http.GET
