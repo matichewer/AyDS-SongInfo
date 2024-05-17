@@ -14,5 +14,4 @@
 .cxx
 local.properties
 
-/.idea/vcs.xml
-/.idea/deploymentTargetDropDown.xml
+/.idea/
