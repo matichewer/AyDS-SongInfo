@@ -1,6 +1,6 @@
 package ayds.songinfo.moredetails.data
 
-import ayds.songinfo.moredetails.data.external.OtherInfoService
+import ayds.artist.external.external.OtherInfoService
 import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorage
 import ayds.songinfo.moredetails.domain.ArtistBiography
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
@@ -14,7 +14,7 @@ import org.junit.Test
 class OtherInfoRepositoryTest {
 
     private val otherInfoLocalStorage: OtherInfoLocalStorage = mockk()
-    private val otherInfoService: OtherInfoService = mockk()
+    private val otherInfoService: ayds.artist.external.external.OtherInfoService = mockk()
     private val otherInfoRepository: OtherInfoRepository = OtherInfoRepositoryImpl(otherInfoLocalStorage, otherInfoService)
 
     @Test
