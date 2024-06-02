@@ -20,6 +20,7 @@ data class CardEntity(
     val artistName: String,
     val content: String,
     val url: String,
+    val urlLogo: String,
     val source: Int
 )
 
@@ -29,7 +30,7 @@ interface CardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCard(article: CardEntity)
 
-    @Query("SELECT * FROM CardEntity WHERE artistName LIKE :artistName LIMIT 1")
-    fun getCardByArtistName(artistName: String): CardEntity?
+    @Query("SELECT * FROM CardEntity WHERE artistName LIKE :artistName")
+    fun getCardByArtistName(artistName: String): List<CardEntity>
 
 }

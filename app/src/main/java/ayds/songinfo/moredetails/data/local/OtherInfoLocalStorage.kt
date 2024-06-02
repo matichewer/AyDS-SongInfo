@@ -2,9 +2,10 @@ package ayds.songinfo.moredetails.data.local
 
 import ayds.songinfo.moredetails.domain.Card
 import ayds.songinfo.moredetails.domain.CardSource
+import java.util.LinkedList
 
 interface OtherInfoLocalStorage {
-    fun getCard(artistName: String): Card?
+    fun getCard(artistName: String): LinkedList<Card>
     fun insertCard(card: Card)
 }
 
@@ -12,7 +13,7 @@ internal class OtherInfoLocalStorageImpl(
     private val cardDatabase: CardDatabase,
 ) : OtherInfoLocalStorage {
 
-    override fun getCard(artistName: String): Card? {
+    override fun getCard(artistName: String): LinkedList<Card> {
         val artistEntity = cardDatabase.CardDao().getCardByArtistName(artistName)
         return artistEntity?.let {
             Card(artistName, artistEntity.content, artistEntity.url, CardSource.entries[artistEntity.source] )

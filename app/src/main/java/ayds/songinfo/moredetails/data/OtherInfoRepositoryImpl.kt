@@ -6,18 +6,19 @@ import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorage
 import ayds.songinfo.moredetails.domain.Card
 import ayds.songinfo.moredetails.domain.CardSource
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
+import java.util.LinkedList
 
 internal class OtherInfoRepositoryImpl(
     private val otherInfoLocalStorage: OtherInfoLocalStorage,
     private val lastFmService: LastFmService,
 ) : OtherInfoRepository {
 
-    override fun getCard(artistName: String): Card {
+    override fun getCard(artistName: String): LinkedList<Card> {
         val dbCard = otherInfoLocalStorage.getCard(artistName)
+        val cardList: LinkedList<Card>
 
-        val card: Card
 
-        if (dbCard != null) {
+        if (dbCard.count()) {
             card = dbCard.apply { markItAsLocal() }
         } else {
             card = lastFmService.getArticle(artistName).toCard()
@@ -25,7 +26,7 @@ internal class OtherInfoRepositoryImpl(
                 otherInfoLocalStorage.insertCard(card)
             }
         }
-        return card
+        return cardList
     }
 
     private fun Card.markItAsLocal() {
