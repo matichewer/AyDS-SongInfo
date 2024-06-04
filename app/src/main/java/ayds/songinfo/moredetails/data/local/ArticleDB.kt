@@ -14,13 +14,12 @@ abstract class CardDatabase : RoomDatabase() {
     abstract fun CardDao(): CardDao
 }
 
-@Entity
+@Entity(primaryKeys = ["artistName", "source"])
 data class CardEntity(
-    @PrimaryKey
     val artistName: String,
     val content: String,
     val url: String,
-    val urlLogo: String,
+    val logoUrl: String,
     val source: Int
 )
 
@@ -31,6 +30,6 @@ interface CardDao {
     fun insertCard(article: CardEntity)
 
     @Query("SELECT * FROM CardEntity WHERE artistName LIKE :artistName")
-    fun getCardByArtistName(artistName: String): List<CardEntity>
+    fun getCardsByArtistName(artistName: String): List<CardEntity>
 
 }
